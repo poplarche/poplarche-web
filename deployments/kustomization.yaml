@@ -1,0 +1,16 @@
+secretGenerator:
+- name: postgresql-root-pass
+  literals:
+  - password=password
+- name: postgresql-user-pass
+  literals:
+  - username=poplarche
+  - password=poplarche
+- name: postgresql-db-url
+  literals:
+  - database=polls
+  - url=jdbc:postgresql://db:5432/poplarche?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+resources:
+  - database-deployment.yaml
+  - backend.yaml
+  - frontend.yaml

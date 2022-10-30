@@ -11,8 +11,8 @@
 	<groupId>com.poplarche-web</groupId>
 	<artifactId>app</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>app</name>
-	<description>Demo project for Spring Boot</description>
+	<name>poplarche-web</name>
+	<description>Poplarche applications</description>
 	<properties>
 		<java.version>19</java.version>
 	</properties>

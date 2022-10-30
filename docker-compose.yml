@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  app-server:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: ${JDBC_DSN}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+    networks:
+      - backend
+      - frontend
+
+  app-client:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_BASE_URL: http://127.0.0.1:8080/api
+    ports:
+      - "9090:80"
+    restart: always
+    depends_on:
+      - app-server
+    networks:
+      - frontend
+
+  db:
+    image: postgres:15
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+    networks:
+      - backend
+
+volumes:
+  db-data:
+
+networks:
+  backend:
+  frontend:
