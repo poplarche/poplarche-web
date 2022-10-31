@@ -1,5 +1,16 @@
-FROM openjdk:19-jdk-alpine as build
+FROM maven:3.8.6 AS maven
+LABEL MAINTAINER="sgwebfreelancer@gmail.com"
 
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+RUN mvn package
+
+FROM adoptopenjdk/openjdk19:alpine-jre
+
+ARG JAR_FILE=spring-boot-api-tutorial.jar
+
+WORKDIR /opt/app
+
+COPY --from=maven /usr/src/app/target/${JAR_FILE} /opt/app/
+
+ENTRYPOINT ["java","-jar","backend.jar"]
